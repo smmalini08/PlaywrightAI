@@ -1,0 +1,40 @@
+{
+  "name": "playwright-ai",
+  "version": "2.0.0",
+  "description": "Playwright test automation with Cucumber BDD and MCP servers for eaapp.somee.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js",
+    "test:ui": "cucumber-js --format json:test-results/cucumber-report.json && npm run test:report",
+    "test:headed": "HEADED=true cucumber-js",
+    "test:chrome": "BROWSER=chromium cucumber-js",
+    "test:firefox": "BROWSER=firefox cucumber-js",
+    "test:webkit": "BROWSER=webkit cucumber-js",
+    "test:report": "node scripts/generate-report.js",
+    "test:dry-run": "cucumber-js --dry-run",
+    "test:tags": "cucumber-js --tags"
+  },
+  "keywords": [
+    "playwright",
+    "cucumber",
+    "bdd",
+    "gherkin",
+    "testing",
+    "automation",
+    "e2e",
+    "pom",
+    "mcp"
+  ],
+  "author": "smmalini08",
+  "license": "MIT",
+  "devDependencies": {
+    "@cucumber/cucumber": "^9.5.0",
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3",
+    "html-reporter": "^0.0.2"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.1.0"
+  }
+}
