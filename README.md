@@ -1,25 +1,136 @@
-# PlaywrightAI - Test Automation Suite
+# PlaywrightAI - Cucumber BDD with POM Framework
 
-Comprehensive Playwright test automation framework with MCP server support for testing **http://eaapp.somee.com/**.
+Professional Playwright test automation framework using Cucumber BDD with Gherkin syntax and Page Object Model (POM) pattern for testing **http://eaapp.somee.com/**.
 
-## 📋 Overview
+## 🎯 Framework Architecture
 
-This project provides automated test coverage for the EAApp application using:
-- **Playwright** - Modern cross-browser testing framework
-- **TypeScript** - Type-safe test code
-- **MCP Servers** - Model Context Protocol integration for AI-assisted testing
+### **Behavior-Driven Development (BDD)**
+- Feature files written in Gherkin syntax
+- Business-readable test scenarios
+- Separation of concerns between features and code
 
-## ✨ Features
+### **Page Object Model (POM)**
+- BasePage: Common functionality for all pages
+- EAAppPage: Application-specific page object
+- Maintainable and scalable code structure
 
-- ✅ Cross-browser testing (Chrome, Firefox, Safari)
-- ✅ Mobile and tablet responsive testing
-- ✅ Positive and negative test cases
-- ✅ HTML, JSON, and JUnit reporting
-- ✅ Screenshot and video on failure
-- ✅ Trace recording for debugging
-- ✅ Parallel test execution
-- ✅ Security testing (SQL Injection, XSS)
-- ✅ Performance testing
+### **Cucumber Integration**
+- Seamless step definitions
+- Support for scenario tags and filtering
+- Multiple reporting formats (HTML, JSON, JUnit)
+
+## 📁 Project Structure
+
+```
+PlaywrightAI/
+├── features/
+│   ├── page-objects/
+│   │   ├── BasePage.ts                    # Base class with common methods
+│   │   └── EAAppPage.ts                   # Application-specific page object
+│   ├── step_definitions/
+│   │   ├── hooks.ts                       # Before/After lifecycle hooks
+│   │   ├── eaapp.steps.ts                 # Main step definitions
+│   │   └── extended.steps.ts              # Extended step definitions
+│   ├── eaapp-positive.feature             # Positive test scenarios (6 scenarios)
+│   ├── eaapp-negative.feature             # Negative test scenarios (8 scenarios)
+│   └── eaapp-security-performance.feature # Security & performance tests (6 scenarios)
+├── test-results/                          # Test reports and screenshots
+├── cucumber.js                            # Cucumber configuration
+├── package.json                           # Dependencies and scripts
+├── tsconfig.json                          # TypeScript configuration
+└── README.md                              # This file
+```
+
+## 📋 Feature Files Overview
+
+### ✅ **eaapp-positive.feature** (6 Scenarios)
+- `@smoke` - Verify homepage loads successfully
+- `@positive @ui` - Verify page contains expected UI elements
+- `@positive @responsive @mobile` - Verify page is responsive on mobile view
+- `@positive @responsive @tablet` - Verify page is responsive on tablet view
+- `@positive @interactive` - Verify clickable elements are interactive
+- `@positive @performance` - Verify page content loads within acceptable time
+
+### ❌ **eaapp-negative.feature** (8 Scenarios)
+- `@negative @error-handling` - Verify 404 error for non-existent page
+- `@negative @security @sql-injection` - Verify SQL Injection attempt is handled
+- `@negative @security @xss` - Verify XSS attack prevention
+- `@negative @validation` - Verify empty form submission handling
+- `@negative @timeout` - Verify handling of network timeout
+- `@negative @input-validation` - Verify special characters in URL are handled
+- `@negative @input-validation @large-input` - Verify large input string handling
+- `@negative @stress-test` - Verify rapid consecutive requests handling
+
+### 🔐 **eaapp-security-performance.feature** (6 Scenarios)
+- `@security @sensitive-data` - Verify no sensitive data in console logs
+- `@performance @resources` - Verify CSS and JS resources load successfully
+- `@performance @load-time` - Verify page load time performance
+- `@performance @responsive @desktop` - Verify desktop view responsiveness
+- `@accessibility` - Verify basic page accessibility
+- `@security @error-messages` - Verify no sensitive data in error messages
+
+## 🛠️ Step Definitions
+
+### **Given Steps** (Setup)
+- `Given the user navigates to the EAApp homepage`
+- `Given the user is on the EAApp homepage`
+- `Given the user sets the viewport to {string} size`
+- `Given the user sets the page timeout to {int} seconds`
+
+### **When Steps** (Actions)
+- `When the user waits for the page to load`
+- `When the user clicks on the first clickable element`
+- `When the user submits an empty form`
+- `When the user navigates to {string}`
+- `When the user tries to access {string}`
+- `When the user enters {string} in the first input field`
+- `When the user hovers over the first button`
+- `When the user measures the page load time`
+- `When the user makes {int} rapid requests`
+- `When the user enters a large string of {int} characters in the first input field`
+
+### **Then Steps** (Assertions)
+- `Then the page should load successfully`
+- `Then the homepage should be displayed`
+- `Then the page should not show an error`
+- `Then the page content should be visible`
+- `Then at least one button should be present`
+- `Then clickable elements should be interactive`
+- `Then the page should be responsive`
+- `Then the page should load within {int} seconds`
+- `Then a {int} error should be returned`
+- `Then the page should not crash`
+- `Then no sensitive data should be in the console`
+- `Then all CSS and JS resources should load successfully`
+- `Then the page URL should contain {string}`
+- `Then the page title should be {string}`
+- `Then the response status should be less than {int}`
+- `Then the response status should be greater than or equal to {int}`
+- `Then the page should have at least {int} visible elements`
+- `Then the page should not have console errors`
+- `Then most of the rapid requests should succeed`
+- `Then the page should contain text {string}`
+- `Then the page should not contain text {string}`
+
+## 🏛️ Page Object Model Classes
+
+### **BasePage.ts** - Base Class
+Provides common functionality:
+- Navigation: `navigateTo()`, `goBack()`, `goForward()`
+- Page interaction: `clickElement()`, `fillText()`, `hoverElement()`
+- Element queries: `getText()`, `isElementVisible()`, `countElements()`
+- Page state: `getPageURL()`, `getPageTitle()`, `getPageContent()`
+- Performance: `measurePageLoadTime()`, `executeScript()`
+- And more...
+
+### **EAAppPage.ts** - Application-Specific Page
+Extends BasePage with EAApp-specific methods:
+- Navigation: `goToHomePage()`, `accessNonExistentPage()`
+- Validation: `isHomePageLoaded()`, `hasErrorContent()`
+- Responsive testing: `setMobileViewport()`, `setTabletViewport()`, `setDesktopViewport()`
+- Security testing: `trySQLInjection()`, `tryXSSAttack()`
+- Performance testing: `getLoadTimePerformance()`, `getFailedResources()`
+- And more...
 
 ## 📦 Installation
 
@@ -48,168 +159,140 @@ npx playwright install
 npm test
 ```
 
-### Run Tests with UI Mode
+### Run Tests with Specific Tags
 ```bash
-npm run test:ui
+# Run smoke tests
+npm test -- --tags "@smoke"
+
+# Run positive tests only
+npm test -- --tags "@positive"
+
+# Run negative tests only
+npm test -- --tags "@negative"
+
+# Run security tests only
+npm test -- --tags "@security"
+
+# Run performance tests only
+npm test -- --tags "@performance"
+
+# Run mobile responsive tests
+npm test -- --tags "@mobile"
+
+# Run with multiple tags (AND condition)
+npm test -- --tags "@positive and @smoke"
 ```
 
-### Run Tests in Debug Mode
+### Run Tests with Specific Browser
 ```bash
-npm run test:debug
+# Run with Firefox browser
+BROWSER=firefox npm test
+
+# Run with WebKit (Safari)
+BROWSER=webkit npm test
+
+# Run with Chromium (default)
+BROWSER=chromium npm test
 ```
 
-### Run Tests Headed (with browser visible)
+### Run Tests in Headed Mode
 ```bash
-npm run test:headed
+HEADED=true npm test
 ```
 
-### Run Tests for Specific Browser
+### Dry Run (Syntax Check)
 ```bash
-npm run test:chrome      # Chromium only
-npm run test:firefox     # Firefox only
-npm run test:webkit      # Safari only
+npm run test:dry-run
 ```
 
-### View HTML Report
+### Generate Reports
 ```bash
 npm run test:report
 ```
-
-## 📊 Test Coverage
-
-### Positive Test Cases (6 tests)
-
-| Test ID | Description |
-|---------|-------------|
-| TC001 | Verify homepage loads successfully |
-| TC002 | Verify page contains expected UI elements |
-| TC003 | Verify page is responsive - mobile view |
-| TC004 | Verify page is responsive - tablet view |
-| TC005 | Verify clickable elements are interactive |
-| TC006 | Verify page content loads within acceptable time |
-
-### Negative Test Cases (8 tests)
-
-| Test ID | Description |
-|---------|-------------|
-| NC001 | Verify 404 error for non-existent page |
-| NC002 | Verify SQL Injection attempt is handled |
-| NC003 | Verify XSS attack prevention |
-| NC004 | Verify empty form submission handling |
-| NC005 | Verify handling of network timeout |
-| NC006 | Verify special characters in URL are handled |
-| NC007 | Verify large input string handling |
-| NC008 | Verify rapid consecutive requests handling |
-
-### Security & Performance Tests
-
-| Test ID | Description |
-|---------|-------------|
-| SEC001 | Verify no sensitive data in console |
-| PERF001 | Verify CSS and JS loads successfully |
-
-## 📁 Project Structure
-
-```
-PlaywrightAI/
-├── tests/
-│   └── eaapp.spec.ts          # Main test suite
-├── playwright.config.ts       # Playwright configuration
-├── tsconfig.json             # TypeScript configuration
-├── package.json              # Project dependencies
-├── .gitignore               # Git ignore rules
-├── .npmrc                   # NPM configuration
-└── README.md                # This file
-```
-
-## ⚙️ Configuration
-
-### Playwright Configuration (`playwright.config.ts`)
-
-The configuration includes:
-- **Base URL**: http://eaapp.somee.com/
-- **Browsers**: Chrome, Firefox, Safari
-- **Devices**: Desktop, Mobile, Tablet
-- **Reporting**: HTML, JSON, JUnit
-- **Screenshots**: On failure only
-- **Videos**: On failure
-- **Traces**: On first retry
-- **Retries**: 2 in CI, 0 locally
-- **Parallel**: Enabled for local, disabled in CI
-
-## 🔐 Security Testing
-
-The test suite includes security tests for:
-- SQL Injection attacks
-- XSS (Cross-Site Scripting) attacks
-- Input validation
-- Special character handling
-- Large input handling
-- Sensitive data leakage
-
-## 📈 Performance Testing
-
-Tests verify:
-- Page load time (< 10 seconds)
-- Resource loading (CSS, JS)
-- Responsive design on multiple viewports
-- Rapid request handling
-
-## 🐛 Debugging
-
-### Enable Trace Viewer
-```bash
-npx playwright show-trace trace.zip
-```
-
-### Run Single Test
-```bash
-npx playwright test tests/eaapp.spec.ts -g "TC001"
-```
-
-### Verbose Output
-```bash
-npm test -- --reporter=list
-```
-
-## 📝 Environment Variables
-
-Create `.env` file for configuration (optional):
-```
-BASE_URL=http://eaapp.somee.com/
-TIMEOUT=30000
-HEADLESS=true
-```
-
-## 🤖 MCP Server Integration
-
-To use MCP servers with this project:
-
-1. Install MCP SDK:
-```bash
-npm install @modelcontextprotocol/sdk
-```
-
-2. Configure MCP servers in your IDE or test runner
-
-3. MCP servers can assist with:
-   - Test generation
-   - Test analysis
-   - Locator suggestions
-   - Test optimization
 
 ## 📊 Reports
 
 After running tests, view reports:
 
-- **HTML Report**: `playwright-report/index.html`
-- **JSON Results**: `test-results/results.json`
+- **HTML Report**: `test-results/cucumber-report.html`
+- **JSON Results**: `test-results/cucumber-report.json`
 - **JUnit XML**: `test-results/junit.xml`
+- **Screenshots**: `test-results/screenshot-*.png` (on failure)
+
+## 🎨 Gherkin Syntax Features
+
+### Scenario Tags
+Tags help organize and filter tests:
+```gherkin
+@smoke @positive @homepage
+Scenario: Verify homepage loads successfully
+```
+
+### Parameters
+Use dynamic parameters in steps:
+```gherkin
+When the user sets the viewport to "mobile" size
+Then the page should load within 10 seconds
+```
+
+### Multiple Assertions
+Chain multiple assertions:
+```gherkin
+Then the page should load successfully
+And the homepage should be displayed
+And the page should not show an error
+```
+
+## 🤖 Browser Management
+
+### BrowserManager Utility
+Handles browser lifecycle:
+- Multiple browser support (Chromium, Firefox, WebKit)
+- Headless/headed mode control
+- Context and page management
+- Automatic cleanup
+
+Environment variables:
+- `BROWSER` - Set browser type (chromium, firefox, webkit)
+- `HEADED` - Set headed mode (true/false)
+
+## 🔐 Security Testing
+
+Tests include security scenarios for:
+- SQL Injection attacks
+- XSS (Cross-Site Scripting) attacks
+- Sensitive data leakage
+- Error message exposure
+
+## 📈 Performance Testing
+
+Tests verify:
+- Page load time (< 10 seconds)
+- CSS/JS resource loading
+- Mobile/Tablet/Desktop responsiveness
+- Stress testing with rapid requests
+
+## 🐛 Debugging
+
+### View Trace Information
+```bash
+npx playwright show-trace trace.zip
+```
+
+### Run Single Scenario
+```bash
+npm test -- --name "Verify homepage loads successfully"
+```
+
+### Verbose Output
+```bash
+npm test -- --format progress-bar
+```
 
 ## 🛠️ Troubleshooting
 
 ### Tests timeout
-- Increase timeout in `playwright.config.ts`
+- Increase timeout in hooks or specific scenarios
 - Check network connectivity to http://eaapp.somee.com/
 
 ### Browser not found
@@ -223,18 +306,18 @@ npx playwright install-deps
 chmod +x node_modules/.bin/playwright
 ```
 
-### Port already in use
-Kill the process using port 3000:
+### Type errors
 ```bash
-lsof -ti:3000 | xargs kill -9  # macOS/Linux
-netstat -ano | findstr :3000   # Windows
+npm install -D typescript @types/node
+npx tsc --init
 ```
 
 ## 📚 Resources
 
 - [Playwright Documentation](https://playwright.dev)
-- [Playwright API Reference](https://playwright.dev/docs/api/class-playwright)
-- [MCP Documentation](https://modelcontextprotocol.io)
+- [Cucumber Documentation](https://cucumber.io/docs/cucumber)
+- [Gherkin Reference](https://cucumber.io/docs/gherkin)
+- [BDD Best Practices](https://cucumber.io/docs/bdd)
 
 ## 👤 Author
 
@@ -258,9 +341,10 @@ Contributions are welcome! Feel free to:
 For issues or questions:
 - Open an issue on [GitHub Issues](https://github.com/smmalini08/PlaywrightAI/issues)
 - Check existing documentation
-- Review test cases for examples
+- Review feature files for examples
 
 ---
 
 **Last Updated**: 2026-05-19
-**Playwright Version**: ^1.40.0
+**Framework**: Playwright + Cucumber BDD + POM
+**Total Test Scenarios**: 20 (6 positive + 8 negative + 6 security/performance)
